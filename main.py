@@ -47,14 +47,18 @@ app = Flask(__name__)
 def getEntries():
   entries = ""
   entry_list = []
-  with open("/tmp/links.txt","r") as file:
-    for x in file.readlines():
-      r = siteFeed(x)
-      for y in r.getEntries():
-        entry_list.append([y.published_parsed,r.formatEntry(y)]) 
-    for x in sorted(entry_list,key=lambda y:y[0],reverse=True):
-      entries += x[1]
-    return entries
+  try:
+    with open("/tmp/links.txt","r") as file:
+      for x in file.readlines():
+        r = siteFeed(x)
+        for y in r.getEntries():
+          entry_list.append([y.published_parsed,r.formatEntry(y)]) 
+      for x in sorted(entry_list,key=lambda y:y[0],reverse=True):
+        entries += x[1]
+      return entries
+  except:
+    with open("/tmp/links.txt",'w') as file:
+      file.write("")
 
 #html = f"""
 #<!DOCTYPE html>

@@ -1,0 +1,3 @@
+https://hackaday.com/rss.xml
+https://itsfoss.com/rss
+https://rss.nytimes.com/services/xml/rss/nyt/World.xml

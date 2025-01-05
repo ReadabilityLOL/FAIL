@@ -47,7 +47,7 @@ app = Flask(__name__)
 def getEntries():
   entries = ""
   entry_list = []
-  with open("links.txt","r") as file:
+  with open("/tmp/links.txt","r") as file:
     for x in file.readlines():
       r = siteFeed(x)
       for y in r.getEntries():
@@ -114,10 +114,10 @@ def homepage():
 def edit_feed():
   if request.method == 'POST':
     theList = ast.literal_eval(request.data.decode())
-    with open("links.txt","w") as file:
+    with open("/tmp/links.txt","w") as file:
       file.write("\n".join(theList)+"\n")
   lines2 = []
-  with open("links.txt","r") as file:
+  with open("/tmp/links.txt","r") as file:
     lines = file.readlines()
     for x in lines:
       lines2.append(f"""{x.replace("\n","")}""")

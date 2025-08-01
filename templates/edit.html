@@ -26,33 +26,83 @@
     </style>
   </head>
   <body>
-    <h1 class="header">
-      <a style="text-decoration: none;" href="/">F.A.I.L</a>
-    </h1>
-    <h1>Edit your rss feeds</h1>
-    <ul id="rss-feeds">
-    </ul>
-    <input type="text" id="new-feed" placeholder="put rss link here">
-    <button id="add-button">Add feed</button>
-    <script>
-      const rssList = document.getElementById("rss-feeds");
-      const newFeed = document.getElementById("new-feed");
-      const addButton = document.getElementById("add-button");
+    <center>
+      <h1 class="header">
+        <a style="text-decoration: none;" href="/">F.A.I.L</a>
+      </h1>
+      <h1>Edit your rss feeds</h1>
+      <ul id="rss-feeds">
+      </ul>
+      <input type="text" id="new-feed" placeholder="put rss link here">
+      <button id="add-button">Add feed</button>
+      <script>
+        const rssList = document.getElementById("rss-feeds");
+        const newFeed = document.getElementById("new-feed");
+        const addButton = document.getElementById("add-button");
 
-      const feedContainer = document.createElement("div");
-      feedContainer.cssText = "float:left";
-      list = {{feedList|tojson}};
-      console.log(list.toString())
+        const feedContainer = document.createElement("div");
+        feedContainer.cssText = "float:left";
+        list = {{feedList|tojson}};
+        console.log(list.toString())
 
-      function loadFeed(){
-        //list = {{feedList}};
-        for (var x = 0; x < list.length; x++) { 
-          console.log(list[x]); 
+        function loadFeed(){
+          //list = {{feedList}};
+          for (var x = 0; x < list.length; x++) { 
+            console.log(list[x]); 
+            const listItem = document.createElement("li");
+            //listItem.cssText = "display: inline-block;";
+
+            const removeButton = document.createElement("button");
+            console.log(removeButton);
+            removeButton.innerText = "Remove";
+            removeButton.cssText = "background:#ff0000; height:30px; width:20px; /*display: inline-block;*/";
+
+            removeButton.addEventListener("click", function() {
+              var index = list.indexOf(listItem.innerText);
+              listItem.remove();
+              removeButton.remove();
+              list.splice(index,1);
+              console.log(list);
+              const response = fetch('/edit_feed', {
+                headers: {"Content-Type": "text/json"},
+                method: 'POST',
+                body: JSON.stringify(list)
+              })
+            });
+
+            listItem.innerHTML = `<a href="${list[x]}">${list[x]}</a>`;
+            //rssList.appendChild(listItem);
+            //rssList.appendChild(removeButton);
+
+            feedContainer.appendChild(listItem);
+            feedContainer.appendChild(removeButton);
+
+            rssList.appendChild(feedContainer);
+
+            newFeed.value = "";
+          };
+        }
+        
+        function addFeed(){
+          const feedText = newFeed.value;
           const listItem = document.createElement("li");
           //listItem.cssText = "display: inline-block;";
 
+          list.push(feedText);
+          
+          //const response = fetch("/edit_feed", {
+          //  method: "POST",
+          //  body: JSON.stringify(list),
+          //});
+
+          const response = fetch('/edit_feed', {
+            headers: {"Content-Type": "text/json"},
+            method: 'POST',
+            body: JSON.stringify(list)
+          })
+
+
           const removeButton = document.createElement("button");
-          console.log(removeButton);
           removeButton.innerText = "Remove";
           removeButton.cssText = "background:#ff0000; height:30px; width:20px; /*display: inline-block;*/";
 
@@ -62,6 +112,7 @@
             removeButton.remove();
             list.splice(index,1);
             console.log(list);
+
             const response = fetch('/edit_feed', {
               headers: {"Content-Type": "text/json"},
               method: 'POST',
@@ -69,7 +120,7 @@
             })
           });
 
-          listItem.innerHTML = `<a href="${list[x]}">${list[x]}</a>`;
+          listItem.innerText = feedText;
           //rssList.appendChild(listItem);
           //rssList.appendChild(removeButton);
 
@@ -79,62 +130,13 @@
           rssList.appendChild(feedContainer);
 
           newFeed.value = "";
-        };
-      }
-      
-      function addFeed(){
-        const feedText = newFeed.value;
-        const listItem = document.createElement("li");
-        //listItem.cssText = "display: inline-block;";
+        }
 
-        list.push(feedText);
-        
-        //const response = fetch("/edit_feed", {
-        //  method: "POST",
-        //  body: JSON.stringify(list),
-        //});
+        addButton.addEventListener("click", addFeed);
 
-        const response = fetch('/edit_feed', {
-          headers: {"Content-Type": "text/json"},
-          method: 'POST',
-          body: JSON.stringify(list)
-        })
+        loadFeed();
 
-
-        const removeButton = document.createElement("button");
-        removeButton.innerText = "Remove";
-        removeButton.cssText = "background:#ff0000; height:30px; width:20px; /*display: inline-block;*/";
-
-        removeButton.addEventListener("click", function() {
-          var index = list.indexOf(listItem.innerText);
-          listItem.remove();
-          removeButton.remove();
-          list.splice(index,1);
-          console.log(list);
-
-          const response = fetch('/edit_feed', {
-            headers: {"Content-Type": "text/json"},
-            method: 'POST',
-            body: JSON.stringify(list)
-          })
-        });
-
-        listItem.innerText = feedText;
-        //rssList.appendChild(listItem);
-        //rssList.appendChild(removeButton);
-
-        feedContainer.appendChild(listItem);
-        feedContainer.appendChild(removeButton);
-
-        rssList.appendChild(feedContainer);
-
-        newFeed.value = "";
-      }
-
-      addButton.addEventListener("click", addFeed);
-
-      loadFeed();
-
-    </script>
+      </script>
+      </center>
   </body>
 </html>

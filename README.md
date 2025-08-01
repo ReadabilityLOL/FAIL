@@ -1,11 +1,2 @@
 # Flawed Aggregator of Inconsequential Links
-This is an rss feed I made to learn Flask. Please do not actually use this. The font used is Handlee by Joe Prince.
-
-## To future users:
-Please don't use my project.
-
-## To future employers:
-My project is awesome and you should hire me.
-
-## To future vandalists:
-Please don't hack my project.
+This is an rss feed I made to learn Flask. I used [Vercel](https://vercel.com) to host it. The font used is Handlee by Joe Prince. Currently, it cannot save rss feeds past one session, so it's not advised to use it, but in the future, I might add cookies so it can save rss feeds to the device.

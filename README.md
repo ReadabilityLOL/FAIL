@@ -4,5 +4,4 @@ This is an rss feed I made to learn Flask. I used [Vercel](https://vercel.com) t
 ## Screenshots
 ![Screenshot1](screenshots/screenshot1.png)
 ---
-The editing page
 ![Screenshot2](screenshots/screenshot1.png)

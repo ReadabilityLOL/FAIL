@@ -16,16 +16,15 @@ img{/*margin-right:15px !important;*/ width: 0px; height: 0; object-fit: contain
 .header{style: bold; font-size:10ch; text-align: center; margin-bottom:0px;}
 .otherpage{text-decoration: none; margin-bottom:1.5%; text-align:center;}
 """
-
 class siteFeed:
   def __init__(self,url,numEntries=5):
     self.url = url
     self.feed = feedparser.parse(url)
     self.numEntries = numEntries
-  
+
   def getEntries(self):
       return self.feed.entries[:self.numEntries]
-  
+
   def formatEntry(self,entry):
     return textwrap.dedent(
     f"""
@@ -39,6 +38,7 @@ class siteFeed:
         </div>
       </div>
     </div>
+      print(entries)
     """
     )
 
@@ -52,9 +52,13 @@ def getEntries():
       for x in file.readlines():
         r = siteFeed(x)
         for y in r.getEntries():
-          entry_list.append([y.published_parsed,r.formatEntry(y)]) 
+          entry_list.append([y.published_parsed,r.formatEntry(y)])
       for x in sorted(entry_list,key=lambda y:y[0],reverse=True):
         entries += x[1]
+
+      if (entries == ""):
+        return "<center class='noentries'> No pages found, try adding some links to your feed </center>"
+
       return entries
   except:
     with open("/tmp/links.txt",'w') as file:

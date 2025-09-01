@@ -38,7 +38,6 @@ class siteFeed:
         </div>
       </div>
     </div>
-      print(entries)
     """
     )
 
